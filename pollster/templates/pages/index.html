@@ -1,0 +1,12 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="card text-center">
+  <div class="card-body">
+    <h1>Would you rather ?</h1>
+    <p>Given inpossible choices what would you do ?</p>
+    <a class="btn btn-dark" href="{% url 'polls:index' %}">
+      Get some questions
+    </a>
+  </div>
+</div>
+{% endblock %}
