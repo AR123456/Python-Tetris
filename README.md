@@ -1,3 +1,3 @@
-# Python-Would-You-Rather
-Would you rather polling app built with Python and Django 
+# Python-Tetris
+The Tetris game built with Python 
 
