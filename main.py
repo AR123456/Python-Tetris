@@ -141,25 +141,30 @@ shape_colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 16
 
 # index 0 - 6 represent shape
 
-# the main data structure for game, this class will represent different pieces
-# will be used many times
-# and hold the x,y width ,hight for that piece
+# the main data structure for game, this class will represent the x,y width ,height piece
 class Piece(object):
     def __init__(self,x,y,shape):
         self.x =x
         self.y =y
         self.shape = shape
-#         this wil be the color at index in shape_colors for that shapes index in shapes
         self.colors = shape_colors[shapes.index(shape)]
-        # setting up so every up arrow key press will change by 1
         self.rotation = 0
 
 
 
-
-def create_grid(locked_positions={}):
-    pass
-
+# grid will be represented 10x20, 2 dimentional list , second dimention will be a list full of colors
+# locked_position argument
+def create_grid(locked_pos={}):
+    # python list comprehension - one list for every row in grid 20
+    #  of sub lists and each sub list will have 10 colors in it
+    grid = [[(0, 0, 0) for x in range(10)] for x in range(20)]
+    # positions in locked_positions
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            if(j, i) in locked_pos:
+                c = locked_pos[(j, i)]
+                grid[i][j] = c
+    return grid
 
 def convert_shape_format(shape):
     pass
