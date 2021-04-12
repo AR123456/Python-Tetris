@@ -19,8 +19,10 @@ represented in order by 0 - 6
 pygame.font.init()
 
 # GLOBALS VARS
+# set up screen height and width
 s_width = 800
 s_height = 700
+# the actual playing area
 play_width = 300  # meaning 300 // 10 = 30 width per block
 play_height = 600  # meaning 600 // 20 = 20 height per block
 block_size = 30
@@ -28,8 +30,9 @@ block_size = 30
 top_left_x = (s_width - play_width) // 2
 top_left_y = s_height - play_height
 
-# SHAPE FORMATS
-
+# SHAPE FORMATS - this represents the shapes in tetrus
+# lists in lists to represent the different rotations of each shapes in tetrus
+# 5 x 5 grid of periods, the 00 represent where the block actually is
 S = [['.....',
       '......',
       '..00..',
@@ -131,16 +134,27 @@ T = [['.....',
       '.00..',
       '..0..',
       '.....']]
-
+# list that holds shapes for easy access to shapes and shape_colors, doing this in lue of dictionaries
 shapes = [S, Z, I, O, J, L, T]
 shape_colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)]
 
 
 # index 0 - 6 represent shape
 
-
+# the main data structure for game, this class will represent different pieces
+# will be used many times
+# and hold the x,y width ,hight for that piece
 class Piece(object):
-    pass
+    def __init__(self,x,y,shape):
+        self.x =x
+        self.y =y
+        self.shape = shape
+#         this wil be the color at index in shape_colors for that shapes index in shapes
+        self.colors = shape_colors[shapes.index(shape)]
+        # setting up so every up arrow key press will change by 1
+        self.rotation = 0
+
+
 
 
 def create_grid(locked_positions={}):
