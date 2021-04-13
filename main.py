@@ -170,7 +170,6 @@ def valid_space(shape, grid):
 def check_lost(positions):
     pass
 
-# get one of the shapes from the shapes list to fall down the screen
 def get_shape():
     return random.choice(shapes)
 
@@ -178,10 +177,15 @@ def get_shape():
 def draw_text_middle(text, size, color, surface):
     pass
 
-
-def draw_grid(surface, row, col):
-    pass
-
+# we are going to be passed a surface
+def draw_grid(surface,grid, row, col):
+    # draw grid objects onto screen
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            # loop through every color in grid - grid[i][j] draw on surface on at what position, and fill
+            pygame.draw.rect(surface, grid[i][j], (top_left_x + j*block_size, top_left_y + i*block_size, block_size,block_size),0)
+    #draw red rectancle the represents play area
+    pygame.draw.rect(surface, (255,0 ,0 ), (top_left_x,top_left_y,play_width,play_height), 4)
 
 def clear_rows(grid, locked):
     pass
@@ -189,9 +193,20 @@ def clear_rows(grid, locked):
 def draw_next_shape(shape, surface):
     pass
 
-def draw_window(surface):
-    pass
-
+def draw_window(surface, grid):
+    #fill surface with black
+    surface.fill((0 , 0 , 0))
+    # draw a title init font object in pygame
+    pygame.font.init()
+    font = pygame.font.SysFont("comicsans", 60)
+    # color white
+    label = font.render("Tetris", 1, (255, 255, 255))
+    # draw label on the screen, in the middle
+    surface.blit(label, (top_left_x + play_width/2- (label.get_width()/2), 30))
+    # call draw grid function
+    draw_grid(surface,grid)
+    #update screen
+    pygame.display.update()
 
 def main():
     pass
