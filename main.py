@@ -150,15 +150,8 @@ class Piece(object):
         self.colors = shape_colors[shapes.index(shape)]
         self.rotation = 0
 
-
-
-# grid will be represented 10x20, 2 dimentional list , second dimention will be a list full of colors
-# locked_position argument
 def create_grid(locked_pos={}):
-    # python list comprehension - one list for every row in grid 20
-    #  of sub lists and each sub list will have 10 colors in it
     grid = [[(0, 0, 0) for x in range(10)] for x in range(20)]
-    # positions in locked_positions
     for i in range(len(grid)):
         for j in range(len(grid[i])):
             if(j, i) in locked_pos:
@@ -177,9 +170,9 @@ def valid_space(shape, grid):
 def check_lost(positions):
     pass
 
-
+# get one of the shapes from the shapes list to fall down the screen
 def get_shape():
-    pass
+    return random.choice(shapes)
 
 
 def draw_text_middle(text, size, color, surface):
