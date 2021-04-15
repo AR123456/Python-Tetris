@@ -160,12 +160,8 @@ def create_grid(locked_pos={}):
     return grid
 
 def convert_shape_format(shape):
-    # get shapes into form computer understands and get them in position if they exist
-    #list of positions we can do stuff with
     positions = []
-    # the sub list we need from shape object
     format = shape.shape[shape.rotation % len(shape.shape)]
-    # loop look through every row or column and if 0 or . do somenthing
     for i , line in enumerate(format):
         row = list(line)
         #row looks like this  "..0.."
@@ -178,7 +174,16 @@ def convert_shape_format(shape):
 
 def valid_space(shape, grid):
     # returns if the current position is a valid space
-    pass
+    accepted_pos = [[(j, i) for j in range(10) if grid [i][j] ==(0,0,0) ]for i in range(20)]
+    # flatten to a one dimensional list
+    accepted_pos = [j for sub in accepted_pos for j in sub]
+    # get shape and convert to position
+    formatted = convert_shape_format()
+    for pos in formatted:
+        if pos not in accepted_pos:
+            if pos[1]> -1:
+                return False
+    return True
 
 
 def check_lost(positions):
