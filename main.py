@@ -173,11 +173,8 @@ def convert_shape_format(shape):
         positions[i] = (pos[0]-2, pos[1]-4)
 
 def valid_space(shape, grid):
-    # returns if the current position is a valid space
     accepted_pos = [[(j, i) for j in range(10) if grid [i][j] ==(0,0,0) ]for i in range(20)]
-    # flatten to a one dimensional list
     accepted_pos = [j for sub in accepted_pos for j in sub]
-    # get shape and convert to position
     formatted = convert_shape_format()
     for pos in formatted:
         if pos not in accepted_pos:
@@ -187,7 +184,6 @@ def valid_space(shape, grid):
 
 
 def check_lost(positions):
-    # are any posiitons above the screen
     for pos in positions:
         x, y = pos
         if y<1:
@@ -236,13 +232,24 @@ def main(win):
     grid = create_grid(locked_positions)
     change_piece = False
     run = True
-    currrent_piece = get_shape()
+    current_piece = get_shape()
     next_piece = get_shape()
     #clock object
     clock = pygame.time.Clock()
     fall_time = 0
+    fall_speed = 0.27
 #     main game loop
     while run:
+        grid = create_grid(locked_positions)
+        fall_time += clock.get_rawtime()
+        clock.tick()
+        if fall_time/1000 > fall_speed:
+            fall_time=0
+            current_piece.y +=1
+            if not(valid_space(current_piece,grid)) and current_piece.y >0:
+                current_piece.y -= 1
+                change_piece = True
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -250,23 +257,42 @@ def main(win):
                 # all the different keys
                 if event.key == pygame.K_LEFT:
                     #move block left  change x val left
-                    currrent_piece.x -= 1
-                    if not(valid_space(currrent_piece,grid)):
-                        currrent_piece += 1
+                    current_piece.x -= 1
+                    if not(valid_space(current_piece,grid)):
+                        current_piece += 1
                 if event.key == pygame.K_RIGHT:
-                    currrent_piece.x += 1
-                    if not(valid_space(currrent_piece,grid)):
-                        currrent_piece -=1
+                    current_piece.x += 1
+                    if not(valid_space(current_piece,grid)):
+                        current_piece -=1
                 if event.key == pygame.K_DOWN:
-                    currrent_piece.y += 1
-                    if not(valid_space(currrent_piece,grid)):
-                        currrent_piece.y -=1
+                    current_piece.y += 1
+                    if not(valid_space(current_piece,grid)):
+                        current_piece.y -=1
                 if event.key == pygame.K_UP:
                     # rotate block
-                    currrent_piece.rotation += 1
-                    if not(valid_space(currrent_piece,grid)):
-                        currrent_piece.rotation -=1
+                    current_piece.rotation += 1
+                    if not(valid_space(current_piece,grid)):
+                        current_piece.rotation -=1
+
+        shape_pos = convert_shape_format(current_piece)
+        #add to grid so we can draw
+        for i in range(len(shape_pos)):
+            x,y = shape_pos[i]
+            if y >-1:
+                grid[y][x] = current_piece.color
+        if change_piece:
+            for pos in shape_pos:
+                p = (pos[0], pos[1])
+                # dictionary key position ,value color
+                locked_positions[p] = current_piece.color
+            current_piece = next_piece
+            next_piece = get_shape()
+            change_piece = False
+
         draw_window(win, grid)
+        if check_lost(locked_positions):
+            run = False
+    pygame.display.quit()
 
 
 
