@@ -215,24 +215,53 @@ def draw_grid(surface, grid, row, col):
 
 
 def clear_rows(grid, locked):
-    pass
+    # clear full row
+    inc = 0
+    # loop through grid backwards
+    for i in range(len(grid) - 1, -1, -1):
+        # set row = to every row in grid
+        row = grid[i]
+        # clear row if there is no black square in row
+        if (0, 0, 0) not in row:
+            # inc to keep track of rows to del
+            inc += 1
+            ind = i
+            # get every position in row
+            for j in range(len(row)):
+                try:
+                    #try to remove the locked postion (dictionary - mutable ) dels rows and colors from grid
+                    del locked[(j, i)]
+                except:
+                    continue
+    # add row at the top so the grid is right size after this del
+    if inc > 0:
+        # for every key in our sorted list of locked positions based on the y value
+        # look at it backwards [::-1] so we do not del the wrong rows in dictionary
+        for key in sorted(list(locked),key = lambda x: x[1])[::-1]:
+            # shift all positions in grid down
+            x,y = key
+            if y < ind:
+                #add to y value to shift it down
+                newKey = (x, y + inc)
+                #same color value as last key
+                locked[newKey]= locked.pop(key)
+
 
 
 def draw_next_shape(shape, surface):
-    # draw off screen and show
-    #get list and turn into positions we can use
     font = pygame.font.SysFont("comicsans", 30)
-    label = font.render("Next Shape", 1, (255,255,255))
-    # where to draw label
+    label = font.render("Next Shape", 1, (255, 255, 255))
     sx = top_left_x + play_width + 50
-    sy = top_left_y + play_height/2 - 100
+    sy = top_left_y + play_height / 2 - 100
     format = shape.shape[shape.rotation % len(shape.shape)]
     for i, line in enumerate(format):
         row = list(line)
         for j, column in enumerate(row):
             if column == "0":
-                pygame.draw.rect(surface,shape.color, (sx + j*block_size, sy + i*block_size, block_size,block_size),0)
-    surface.blit(label, (sx +10, sy -30))
+                pygame.draw.rect(surface, shape.color,
+                                 (sx + j * block_size, sy + i * block_size, block_size, block_size), 0)
+    surface.blit(label, (sx + 10, sy - 30))
+
 
 def draw_window(surface, grid):
     surface.fill((0, 0, 0))
@@ -312,6 +341,8 @@ def main(win):
             current_piece = next_piece
             next_piece = get_shape()
             change_piece = False
+            # call clear_rows when about to change the piece
+            clear_rows(grid, locked_positions)
 
         draw_window(win, grid)
         draw_next_shape(next_piece, win)
