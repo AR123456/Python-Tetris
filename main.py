@@ -213,40 +213,24 @@ def draw_grid(surface, grid, row, col):
             pygame.draw.line(surface, (128, 128, 128), (sx + j * block_size, sy),
                              (sx + j * block_size, sy + play_height))
 
-
 def clear_rows(grid, locked):
-    # clear full row
     inc = 0
-    # loop through grid backwards
     for i in range(len(grid) - 1, -1, -1):
-        # set row = to every row in grid
         row = grid[i]
-        # clear row if there is no black square in row
         if (0, 0, 0) not in row:
-            # inc to keep track of rows to del
             inc += 1
             ind = i
-            # get every position in row
             for j in range(len(row)):
                 try:
-                    #try to remove the locked postion (dictionary - mutable ) dels rows and colors from grid
                     del locked[(j, i)]
                 except:
                     continue
-    # add row at the top so the grid is right size after this del
     if inc > 0:
-        # for every key in our sorted list of locked positions based on the y value
-        # look at it backwards [::-1] so we do not del the wrong rows in dictionary
-        for key in sorted(list(locked),key = lambda x: x[1])[::-1]:
-            # shift all positions in grid down
-            x,y = key
+        for key in sorted(list(locked), key=lambda x: x[1])[::-1]:
+            x, y = key
             if y < ind:
-                #add to y value to shift it down
                 newKey = (x, y + inc)
-                #same color value as last key
-                locked[newKey]= locked.pop(key)
-
-
+                locked[newKey] = locked.pop(key)
 
 def draw_next_shape(shape, surface):
     font = pygame.font.SysFont("comicsans", 30)
@@ -291,11 +275,19 @@ def main(win):
     clock = pygame.time.Clock()
     fall_time = 0
     fall_speed = 0.27
+    #increase fall speed as time goes by
+    level_time = 0
     #     main game loop
     while run:
         grid = create_grid(locked_positions)
         fall_time += clock.get_rawtime()
+        level_time += clock.get_rawtime()
         clock.tick()
+        if level_time/1000 > 5:
+            level_time = 0
+            if fall_speed > 0.12:
+                fall_speed -= 0.005
+
         if fall_time / 1000 > fall_speed:
             fall_time = 0
             current_piece.y += 1
