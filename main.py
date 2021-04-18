@@ -231,6 +231,8 @@ def clear_rows(grid, locked):
             if y < ind:
                 newKey = (x, y + inc)
                 locked[newKey] = locked.pop(key)
+    # here inc is number of rows using to calcuate score 10pts per row
+    return inc
 
 def draw_next_shape(shape, surface):
     font = pygame.font.SysFont("comicsans", 30)
@@ -247,17 +249,23 @@ def draw_next_shape(shape, surface):
     surface.blit(label, (sx + 10, sy - 30))
 
 
-def draw_window(surface, grid):
+def draw_window(surface, grid, score=0):
     surface.fill((0, 0, 0))
     pygame.font.init()
     font = pygame.font.SysFont("comicsans", 60)
     label = font.render("Tetris", 1, (255, 255, 255))
     surface.blit(label, (top_left_x + play_width / 2 - (label.get_width() / 2), 30))
+    font = pygame.font.SysFont("comicsans", 30)
+    label = font.render("Score: " + str(score), 1, (255, 255, 255))
+    sx = top_left_x + play_width + 50
+    sy = top_left_y + play_height / 2 - 100
+    surface.blit(label, (sx + 20,sy + 160))
+
     for i in range(len(grid)):
         for j in range(len(grid[i])):
             pygame.draw.rect(surface, grid[i][j],
                              (top_left_x + j * block_size, top_left_y + i * block_size, block_size, block_size), 0)
-    pygame.draw.rect(surface, (255, 0, 0), (top_left_x, top_left_y, play_width, play_height), 4)
+    pygame.draw.rect(surface, (255, 0, 0), (top_left_x, top_left_y, play_width, play_height), 5)
     draw_grid(surface, grid)
     # draw_grid(surface, 20,10)
     # pygame.display.update()
@@ -271,12 +279,12 @@ def main(win):
     run = True
     current_piece = get_shape()
     next_piece = get_shape()
-    # clock object
     clock = pygame.time.Clock()
     fall_time = 0
     fall_speed = 0.27
-    #increase fall speed as time goes by
     level_time = 0
+    score = 0
+
     #     main game loop
     while run:
         grid = create_grid(locked_positions)
@@ -328,15 +336,13 @@ def main(win):
         if change_piece:
             for pos in shape_pos:
                 p = (pos[0], pos[1])
-                # dictionary key position ,value color
                 locked_positions[p] = current_piece.color
             current_piece = next_piece
             next_piece = get_shape()
             change_piece = False
-            # call clear_rows when about to change the piece
-            clear_rows(grid, locked_positions)
+            score += clear_rows(grid, locked_positions) *10
 
-        draw_window(win, grid)
+        draw_window(win, grid, score)
         draw_next_shape(next_piece, win)
         pygame.display.update()
         if check_lost(locked_positions):
