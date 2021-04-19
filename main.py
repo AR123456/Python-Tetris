@@ -309,6 +309,7 @@ def main(win):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
+                pygame.display.quit()
             if event.type == pygame.KEYDOWN:
                 # all the different keys
                 if event.key == pygame.K_LEFT:
@@ -353,11 +354,21 @@ def main(win):
             pygame.display.update()
             pygame.time.delay(1500)
             run = False
-    pygame.display.quit()
+
 
 
 def main_menu(win):
-    main(win)
+    run = True
+    while run:
+        win.fill((0,0,0))
+        draw_text_middle(win, "Press Any Key to Play ", 60, (255,255,255))
+        pygame.display.update()
+        for event in pygame.event.get()
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.KEYDOWN:
+                main(win)
+    pygame.display.quit()
 
 
 # draw game surface
