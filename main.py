@@ -200,10 +200,7 @@ def get_shape():
 
 
 def draw_text_middle(text, size, color, surface):
-    font = pygame.font.SysFont("comicsans", size, bold=True)
-    label = font.render(text, 1, color)
-    surface.blit(label, (top_left_x + play_width/2 - (label.get_width()/2), top_left_y + play_height/2 - label.get_height()/2))
-
+    pass
 
 
 def draw_grid(surface, grid, row, col):
@@ -309,7 +306,6 @@ def main(win):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-                pygame.display.quit()
             if event.type == pygame.KEYDOWN:
                 # all the different keys
                 if event.key == pygame.K_LEFT:
@@ -350,25 +346,12 @@ def main(win):
         draw_next_shape(next_piece, win)
         pygame.display.update()
         if check_lost(locked_positions):
-            draw_text_middle(win,"You lost ", 80, (255, 255, 255))
-            pygame.display.update()
-            pygame.time.delay(1500)
             run = False
-
+    pygame.display.quit()
 
 
 def main_menu(win):
-    run = True
-    while run:
-        win.fill((0,0,0))
-        draw_text_middle(win, "Press Any Key to Play ", 60, (255,255,255))
-        pygame.display.update()
-        for event in pygame.event.get()
-            if event.type == pygame.QUIT:
-                run = False
-            if event.type == pygame.KEYDOWN:
-                main(win)
-    pygame.display.quit()
+    main(win)
 
 
 # draw game surface
