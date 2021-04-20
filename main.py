@@ -250,6 +250,15 @@ def draw_next_shape(shape, surface):
                 pygame.draw.rect(surface, shape.color,
                                  (sx + j * block_size, sy + i * block_size, block_size, block_size), 0)
     surface.blit(label, (sx + 10, sy - 30))
+def update_score(nscore):
+    with open("scores.txt","r") as f:
+        lines =f.readline()
+        score = lines[0].strip()
+    with open("scores.txt","w") as f:
+        if int(score) > nscore:
+            f.write(str(score))
+        else:
+            f.write(str(nscore))
 
 
 def draw_window(surface, grid, score=0):
@@ -354,6 +363,7 @@ def main(win):
             pygame.display.update()
             pygame.time.delay(1500)
             run = False
+            update_score(score)
 
 
 
