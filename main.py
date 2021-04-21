@@ -215,9 +215,9 @@ def draw_grid(surface, row, col):
     sx = top_left_x
     sy = top_left_y
     for i in range(row):
-        pygame.draw.line(surface, (128,128,128), (sx, sy+ i*30), (sx + play_width, sy + i * 30))  # horizontal lines
+        pygame.draw.line(surface, (128,128,128), (sx, sy+ i*block_size), (sx + play_width, sy + i * block_size))  # horizontal lines
         for j in range(col):
-            pygame.draw.line(surface, (128,128,128), (sx + j * 30, sy), (sx + j * 30, sy + play_height))  # vertical lines
+            pygame.draw.line(surface, (128,128,128), (sx + j * block_size, sy), (sx + j * block_size, sy + play_height))  # vertical lines
 def clear_rows(grid, locked):
     inc = 0
     for i in range(len(grid) - 1, -1, -1):
@@ -313,7 +313,8 @@ def main():
 
     #     main game loop
     while run:
-        fall_speed = 0.27
+        # fall_speed = 0.27 slowing speed down
+        fall_speed = 0.5
         grid = create_grid(locked_positions)
         fall_time += clock.get_rawtime()
         level_time += clock.get_rawtime()
