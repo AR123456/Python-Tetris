@@ -273,14 +273,10 @@ def draw_window(surface, score=0, last_score=0):
 
     for i in range(len(grid)):
         for j in range(len(grid[i])):
-            # pygame.draw.rect(surface, grid[i][j],
-            #                  (top_left_x + j * block_size, top_left_y + i * block_size, block_size, block_size), 0)
-            pygame.draw.rect(surface, grid[i][j], (top_left_x + j * 30, top_left_y + i * 30, 30, 30), 0)
+            pygame.draw.rect(surface, grid[i][j], (top_left_x + j * block_size, top_left_y + i * block_size, block_size, block_size), 0)
     pygame.draw.rect(surface, (255, 0, 0), (top_left_x, top_left_y, play_width, play_height), 5)
-    # draw_grid(surface, grid)
     draw_grid(surface, 20, 10)
     # pygame.display.update()
-
 
 def main():
     global grid
@@ -299,8 +295,8 @@ def main():
 
     #     main game loop
     while run:
-        # fall_speed = 0.27 slowing speed down
-        fall_speed = 0.5
+        # fall_speed = 0.27
+        fall_speed = 0.5 # slowing speed down
         grid = create_grid(locked_positions)
         fall_time += clock.get_rawtime()
         level_time += clock.get_rawtime()
@@ -324,7 +320,6 @@ def main():
             if event.type == pygame.KEYDOWN:
                 # all the different keys
                 if event.key == pygame.K_LEFT:
-                    # move block left  change x val left
                     current_piece.x -= 1
                     if not (valid_space(current_piece, grid)):
                         current_piece.x += 1
@@ -343,7 +338,6 @@ def main():
                         current_piece.rotation -= 1
 
         shape_pos = convert_shape_format(current_piece)
-        # add to grid so we can draw
         for i in range(len(shape_pos)):
             x, y = shape_pos[i]
             if y > -1:
@@ -357,7 +351,6 @@ def main():
             change_piece = False
             score += clear_rows(grid, locked_positions) * 10
 
-        # draw_window(win, grid, score, last_score)
         draw_window(win, score, last_score)
         draw_next_shape(next_piece, win)
         pygame.display.update()
@@ -381,7 +374,6 @@ def main_menu():
             if event.type == pygame.KEYDOWN:
                 main()
     pygame.quit()
-
 
 # draw game surface
 win = pygame.display.set_mode((s_width, s_height))
