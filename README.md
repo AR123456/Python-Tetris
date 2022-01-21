@@ -1,3 +1,2 @@
-# Python-Tetris
-
-The Tetris game built with Python and Pygame
+# Would you rather? 
+A Would you rather game built with Python  
